@@ -1,0 +1,9 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+*.zip
+# Datasource local storage ignored files
+/../../../../../../../../../../:\Users\jaros\AppData\Local\FoundryVTT\Data\modules\calendar-and-resources\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/

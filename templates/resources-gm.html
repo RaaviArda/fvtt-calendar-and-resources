@@ -1,0 +1,22 @@
+<div id="resources-disp-container" style="top: 783px; left: 874px; position: fixed; z-index: 100;">
+    <section id="resources-main">
+        <header class="resources-header">
+          <div id="resources-move">Resources</div>
+        </header>
+        <div>
+            <table>
+                {{#each resources}}
+                <tr>
+                    <td id="resources-name-{{@index}}" style="color: #{{color}}">{{name}}</td>
+                    <td id="resources-{{@index}}" class="resDisp" data-resname="{{name}}" data-resid="{{@index}}" style="color: #{{color}}">
+                        {{value}} / {{max}} (-{{usePerHour}}/H, -{{usePerDay}}/D) {{unit}}</td>
+                    <td><a class="resources-delete" id="resources-delete-{{@index}}" title="Delete Resource" data-resid="{{@index}}"><i class="fas fa-trash" data-resid="{{@index}}"></i></a></td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+        <div>
+            <td><a class="resources-button" id="resources-add">Add new</a></td>
+        </div>
+    </section>
+</div>

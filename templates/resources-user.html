@@ -1,0 +1,18 @@
+<div id="resources-disp-container" style="top: 783px; left: 874px; position: fixed; z-index: 100;">
+    <section id="resources-main">
+        <header class="resources-header">
+          <div id="resources-move">Resources</div>
+        </header>
+        <div>
+            <table>
+                {{#each resources}}
+                <tr>
+                    <td id="resources-name-{{@index}}" style="color: #{{color}}">{{name}}</td>
+                    <td id="resources-{{@index}}" class="resDisp" data-resname="{{name}}" data-resid="{{@index}}" style="color: #{{color}}">
+                        {{value}} / {{max}} (-{{usePerHour}}/H, -{{usePerDay}}/D) {{unit}}</td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+    </section>
+</div>
