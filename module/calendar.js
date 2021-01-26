@@ -26,7 +26,7 @@ class Calendar extends Application {
                     elmnt.style.top = (yPos) + "px";
                     elmnt.style.left = (xPos) + "px";
                     elmnt.style.position = 'fixed';
-                    elmnt.style.zIndex = 100;
+                    elmnt.style.zIndex = "100";
                     resolve();
                 } else {
                     setTimeout(check, 30);
@@ -127,12 +127,6 @@ class Calendar extends Application {
         await updateDataInSettings("partyResources", localData.partyResources);
     }
 
-    toObject() {
-        return {
-            isOpen: this.isOpen
-        };
-    }
-
     async activateListeners(html) {
         const displays = '.calendar-button';
         const calendarMove = '#calendar-move';
@@ -189,7 +183,7 @@ class Calendar extends Application {
                         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
                         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
                         elmnt.style.position = 'fixed';
-                        elmnt.style.zIndex = 100;
+                        elmnt.style.zIndex = "100";
                     }
 
                     function closeDragElement() {

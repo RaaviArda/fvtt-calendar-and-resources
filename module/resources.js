@@ -25,7 +25,7 @@ class Resources extends Application {
                     elmnt.style.top = (yPos) + "px";
                     elmnt.style.left = (xPos) + "px";
                     elmnt.style.position = 'fixed';
-                    elmnt.style.zIndex = 100;
+                    elmnt.style.zIndex = "100";
                     resolve();
                 } else {
                     setTimeout(check, 30);
@@ -101,12 +101,6 @@ class Resources extends Application {
             nameDisp.innerHTML = res.name;
             nameDisp.style.color="#" + res.color;
         });
-    }
-
-    toObject() {
-        return {
-            isOpen: this.isOpen
-        }
     }
 
     async createModifyDialog(type, data) {
@@ -307,7 +301,7 @@ class Resources extends Application {
                         elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
                         elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
                         elmnt.style.position = 'fixed';
-                        elmnt.style.zIndex = 100;
+                        elmnt.style.zIndex = "100";
                     }
 
                     function closeDragElement() {
