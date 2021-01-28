@@ -183,7 +183,7 @@ class Calendar extends Application {
         let avgTemp = this.TEMP_AVG[month];
         let currentTemp = avgTemp + getRandomInt(-5, 5);
         let hour = localData.calendarDate.getUTCHours();
-        let mod = 0;
+        let mod;
 
         if (hour < 4) {
             mod = -10;
