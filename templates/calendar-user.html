@@ -7,12 +7,24 @@
             <table>
                 <tr>
                     <td>Date:</td>
-                    <td id="calendar-date" colspan=7>DD-MM-YYYY</td>
+                    <td id="calendar-date" colspan=8>DD-MM-YYYY</td>
                 </tr>
                 <tr>
                     <td>Time:</td>
-                    <td id="calendar-time" colspan=7>HH:MM</td>
+                    <td id="calendar-time" colspan=8>HH:MM</td>
                 </tr>
+                {{#if weather.display}}
+                <tr>
+                    <td colspan=2>Temperature:</td>
+                    <td id="calendar-temp" colspan=3 style="color: {{weather.tempDisp.color}}">{{weather.tempDisp.desc}}</td>
+                    <td colspan=1>Wind:</td>
+                    <td id="calendar-wind" colspan=2>{{weather.windDisplay}}</td>
+                </tr>
+                <tr>
+                    <td colspan=2>Weather:</td>
+                    <td id="calendar-weather" colspan=6>{{weather.conditions}}</td>
+                </tr>
+                {{/if}}
             </table>
         </div>
     </section>

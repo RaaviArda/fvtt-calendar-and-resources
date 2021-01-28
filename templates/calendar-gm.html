@@ -1,5 +1,5 @@
 <div id="calendar-disp-container" style="top: 783px; left: 874px; position: fixed; z-index: 100;">
-    <section id="calendar-main" class="calendar-main-user">
+    <section id="calendar-main" class="calendar-main-gm">
         <header class="calendar-header">
           <div id="calendar-move">Calendar</div>
         </header>
@@ -7,18 +7,31 @@
             <table>
                 <tr>
                     <td>Date:</td>
-                    <td id="calendar-date" colspan=7>DD-MM-YYYY</td>
+                    <td id="calendar-date" colspan=8>{{date.day}}-{{date.month}}-{{date.year}} ({{date.weekday}})</td>
                 </tr>
                 <tr>
                     <td>Time:</td>
-                    <td id="calendar-time" colspan=7>HH:MM</td>
+                    <td id="calendar-time" colspan=8>{{date.hour}}:{{date.minute}}</td>
                 </tr>
+                {{#if weather.display}}
+                <tr>
+                    <td colspan=2>Temperature:</td>
+                    <td id="calendar-temp" colspan=3 style="color: {{weather.tempDisp.color}}">{{weather.tempDisp.desc}}</td>
+                    <td colspan=1>Wind:</td>
+                    <td id="calendar-wind" colspan=2>{{weather.windDisplay}}</td>
+                </tr>
+                <tr>
+                    <td colspan=2>Weather:</td>
+                    <td id="calendar-weather" colspan=6>{{weather.conditions}}</td>
+                </tr>
+                {{/if}}
                 <tr>
                     <td><a class="calendar-button" data-calmodifier="-3">-3 H</a></td>
                     <td><a class="calendar-button" data-calmodifier="-1">-1 H</a></td>
                     <td><a class="calendar-button" data-calmodifier="1">+1 H</a></td>
-                    <td><a class="calendar-button" data-calmodifier="3">+3 H</a></td>
-                    <td><a class="calendar-button" data-calmodifier="6">+6 H</a></td>
+                    <td><a class="calendar-button" data-calmodifier="3">+2 H</a></td>
+                    <td><a class="calendar-button" data-calmodifier="6">+4 H</a></td>
+                    <td><a class="calendar-button" data-calmodifier="8">+8 H</a></td>
                     <td><a class="calendar-button" data-calmodifier="12">+12 H</a></td>
                     <td><a class="calendar-button" data-calmodifier="24">+24 H</a></td>
                 </tr>

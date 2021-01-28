@@ -28,6 +28,26 @@ Hooks.on('init', () => {
         type: Object,
         onChange: async (value) => await updateLocalData("partyResources", value)
     });
+
+    game.settings.register("calendar-and-resources", "generateWeather", {
+        name: "Generate weather",
+        hint: "Should the calendar generate and display weather",
+        scope: "world",
+        config: true,
+        default: DEFAULT.generateWeather,
+        type: Boolean,
+        onChange: async (value) => await updateLocalData("generateWeather", value)
+    });
+
+    game.settings.register("calendar-and-resources", "currentWeather", {
+        name: "currentWeather",
+        hint: "currentWeather",
+        scope: "world",
+        config: false,
+        default: DEFAULT.currentWeather,
+        type: Object,
+        onChange: async (value) => await updateLocalData("currentWeather", value)
+    });
 });
 
 async function updateLocalData(type, value) {
@@ -38,6 +58,14 @@ async function updateLocalData(type, value) {
         localData[type] = parseInt(value);
         calDisp.updateDisplay();
     } else if (type === "partyResources") {
+        localData[type] = value;
+        resDisp.updateDisplay();
+    } else if (type === "generateWeather") {
+        localData[type] = value;
+        calDisp.isOpen = false;
+        await calDisp.toggleCalendar();
+        calDisp.loadSettings();
+    } else if (type === "currentWeather") {
         localData[type] = value;
         resDisp.updateDisplay();
     }
@@ -74,6 +102,8 @@ const DEFAULT = {};
 DEFAULT.partyResources = [{name: "Sample", value: 0, max: 0, usePerHour: 0, usePerDay: 0, unit: "G", color: "FFFFFF"}];
 DEFAULT.calendarDate = "2185-05-04T22:00:00Z";
 DEFAULT.calendarYearAdjust = 0;
+DEFAULT.generateWeather = true;
+DEFAULT.currentWeather = { wind: { direction: -1, strength: 0 }, temperature: -100, conditions: "" };
 
 
 async function updateDataInSettings(type, data) {
@@ -99,4 +129,20 @@ async function loadData() {
     localData.partyResources =              await getDataFromSettings("partyResources");
     localData.calendarDate =       new Date(await getDataFromSettings("calendarDate"));
     localData.calendarYearAdjust = parseInt(await getDataFromSettings("calendarYearAdjust"));
+    localData.generateWeather =              await getDataFromSettings("generateWeather");
+    localData.currentWeather =               await getDataFromSettings("currentWeather");
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
+function weightedRand(spec) {
+    let i, sum=0, r=Math.random()*100;
+    for (i in spec) {
+        sum += spec[i];
+        if (r <= sum) return i;
+    }
 }

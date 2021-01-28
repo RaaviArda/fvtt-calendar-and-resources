@@ -27,16 +27,18 @@
 }
 
 .calendar-main-user {
-    flex: 1 0 150px;
-    min-width: 150px;
+    flex: 1 0 300px;
+    min-width: 300px;
 }
 
 .calendar-main-gm td {
     padding: 1px;
+    height: 22px;
 }
 
 .calendar-main-user td {
     padding: 1px;
+    height: 22px;
 }
 
 .calendar-header {

@@ -2,6 +2,25 @@ class Calendar extends Application {
     isOpen = false;
     content = "";
     WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    WINDS = ["N ↑", "NE ↗", "E →", "SE ↘", "S ↓", "SW ↙", "W ←", "NW ↖"];
+    TEMP_AVG    = [ -10, -5,  0,  5, 10, 15, 20, 15, 10,  5,  0, -5];
+    FOG_PROB    = [   5, 10,  5,  5,  5,  0,  0,  0,  5,  5, 10,  5];
+    WEATHER_DIST = [
+        {0: 18, 1: 40, 2: 0,  3: 40, 4: 2}, // 1
+        {0: 35, 1: 30, 2: 0,  3: 30, 4: 5}, // 2
+        {0: 40, 1: 30, 2: 10, 3: 10, 4: 10}, // 3
+        {0: 40, 1: 30, 2: 20, 3: 0,  4: 10}, // 4
+        {0: 65, 1: 20, 2: 10, 3: 0,  4: 5}, // 5
+        {0: 83, 1: 10, 2: 5,  3: 0,  4: 2}, // 6
+        {0: 83, 1: 10, 2: 5,  3: 0,  4: 2}, // 7
+        {0: 80, 1: 10, 2: 5,  3: 0,  4: 5}, // 8
+        {0: 65, 1: 20, 2: 10, 3: 0,  4: 5}, // 9
+        {0: 45, 1: 30, 2: 20, 3: 0,  4: 5}, // 10
+        {0: 45, 1: 30, 2: 10, 3: 10, 4: 5}, // 11
+        {0: 38, 1: 30, 2: 0,  3: 30, 4: 2}, // 12
+    ];
+    WEATHER_TYPES = ["☼ clear", "☁ clouds", "🌧 rain", "🌨 snow", "⛈ thunderstorm"];
+
 
     static get defaultOptions() {
         const options = super.defaultOptions;
@@ -12,6 +31,10 @@ class Calendar extends Application {
         }
         options.popOut = false;
         options.resizable = false;
+        return options;
+    }
+
+    getData(options) {
         return options;
     }
 
@@ -79,24 +102,148 @@ class Calendar extends Application {
             await this.close();
         } else {
             this.isOpen = true;
-            this.content = await renderTemplate(templatePath, {});
-            await this.render(true);
+            let timeData = this.generateTimeData();
+            let weatherData = this.generateTempAndWind(false);
+            this.content = await renderTemplate(templatePath, {date: timeData, weather: weatherData});
+            await this.render(true, {date: timeData, weather: weatherData});
+        }
+    }
+
+    generateTimeData() {
+        let dateWeekday = this.WEEKDAYS[localData.calendarDate.getUTCDay()];
+        let dateDay = this.zeroFill(localData.calendarDate.getUTCDate(), 2);
+        let dateMonth = this.zeroFill(localData.calendarDate.getUTCMonth() + 1, 2);
+        let dateYear = localData.calendarDate.getUTCFullYear() + localData.calendarYearAdjust;
+        let timeHour = this.zeroFill(localData.calendarDate.getUTCHours(), 2);
+        let timeMinute = this.zeroFill(localData.calendarDate.getUTCMinutes(), 2);
+
+        return {
+            weekday: dateWeekday,
+            day: dateDay,
+            month: dateMonth,
+            year: dateYear,
+            hour: timeHour,
+            minute: timeMinute
+        };
+    }
+
+    generateWeatherDaily() {
+        let month = localData.calendarDate.getUTCMonth();
+        let fog = getRandomInt(1, 100) < this.FOG_PROB[month];
+        let weather = weightedRand(this.WEATHER_DIST[month]);
+
+        if (fog) {
+            localData.currentWeather.conditions = this.WEATHER_TYPES[weather] + ", 🌫 foggy";
+        } else {
+            localData.currentWeather.conditions = this.WEATHER_TYPES[weather];
+        }
+    }
+
+    generateTempAndWind(newWeather) {
+        if (newWeather) {
+            localData.currentWeather.temperature = this.generateTemperature();
+            if (localData.currentWeather.wind.direction < 0) {
+                localData.currentWeather.wind.direction = getRandomInt(0, 7);
+            } else {
+                localData.currentWeather.wind.direction += getRandomInt(-1, 1);
+                if (localData.currentWeather.wind.direction < 0) {
+                    localData.currentWeather.wind.direction = 7;
+                } else if (localData.currentWeather.wind.direction > 7) {
+                    localData.currentWeather.wind.direction = 0;
+                }
+            }
+
+            if (localData.currentWeather.wind.strength < 3) {
+                localData.currentWeather.wind.strength += getRandomInt(0, 3);
+            } else if (localData.currentWeather.wind.strength < 5) {
+                localData.currentWeather.wind.strength += getRandomInt(-1, 2);
+            } else if (localData.currentWeather.wind.strength < 7) {
+                localData.currentWeather.wind.strength += getRandomInt(-2, 1);
+            } else if (localData.currentWeather.wind.strength < 12) {
+                localData.currentWeather.wind.strength += getRandomInt(-3, 1);
+            } else {
+                localData.currentWeather.wind.strength += getRandomInt(-3, 0);
+            }
+        }
+
+        let tempDisplay = this.generateTempDisp();
+
+        return {
+            wind: localData.currentWeather.wind,
+            windDisplay: localData.currentWeather.wind.strength + " " + this.WINDS[localData.currentWeather.wind.direction],
+            temperature: localData.currentWeather.temperature,
+            tempDisp: tempDisplay,
+            conditions: localData.currentWeather.conditions,
+            display: localData.generateWeather
+        }
+    }
+
+    generateTemperature() {
+        let month = localData.calendarDate.getUTCMonth();
+        let avgTemp = this.TEMP_AVG[month];
+        let currentTemp = avgTemp + getRandomInt(-5, 5);
+        let hour = localData.calendarDate.getUTCHours();
+        let mod = 0;
+
+        if (hour < 4) {
+            mod = -10;
+        } else if (hour < 6) {
+            mod = -5;
+        } else if (hour < 12) {
+            mod = 0;
+        } else if (hour < 16) {
+            mod = 5;
+        } else if (hour < 19) {
+            mod = 0;
+        } else {
+            mod = -5;
+        }
+        return currentTemp + mod;
+    }
+
+    generateTempDisp() {
+        let temp = localData.currentWeather.temperature;
+
+        if (temp < -10) {
+            return {desc: "freezing (---)", color: "#0040FF" };
+        } else if (temp < 0) {
+            return {desc: "cold (--)", color: "#0080FF" };
+        } else if (temp < 10) {
+            return {desc: "chill (-)", color: "#00FFFF" };
+        } else if (temp < 15) {
+            return {desc: "cool (+)", color: "#80FFFF" };
+        } else if (temp < 20) {
+            return {desc: "warm (++)", color: "#FF8000" };
+        } else {
+            return {desc: "hot (+++)", color: "#FF0000" };
         }
     }
 
     updateDisplay() {
         let dateElement = document.getElementById("calendar-date");
         let timeElement = document.getElementById("calendar-time");
-        let dateYear = localData.calendarDate.getUTCFullYear() + localData.calendarYearAdjust;
-        let dateWeekday = this.WEEKDAYS[localData.calendarDate.getUTCDay()];
+        let currentDate = this.generateTimeData();
 
-        dateElement.innerHTML = this.zeroFill(localData.calendarDate.getUTCDate(), 2) + "-" +
-                                this.zeroFill(localData.calendarDate.getUTCMonth() + 1, 2) + "-" +
-                                dateYear + " (" +
-                                dateWeekday + ")";
+        dateElement.innerHTML = currentDate.day + "-" +
+            currentDate.month + "-" +
+            currentDate.year + " (" +
+            currentDate.weekday + ")";
 
-        timeElement.innerHTML = this.zeroFill(localData.calendarDate.getUTCHours(), 2) + ":" +
-                                this.zeroFill(localData.calendarDate.getUTCMinutes(), 2);
+        timeElement.innerHTML = currentDate.hour + ":" +
+            currentDate.minute;
+
+        if (localData.generateWeather) {
+            let windDisplay = localData.currentWeather.wind.strength + " " + this.WINDS[localData.currentWeather.wind.direction];
+            let tempDisplay = this.generateTempDisp();
+
+            let windElement = document.getElementById("calendar-wind");
+            let tempElement = document.getElementById("calendar-temp");
+            let weatherElement = document.getElementById("calendar-weather");
+            windElement.innerHTML = windDisplay;
+            tempElement.style.color = tempDisplay.color;
+            tempElement.innerHTML = tempDisplay.desc;
+            weatherElement.innerHTML = localData.currentWeather.conditions;
+        }
     }
 
     async updateCalendar(calModifier) {
@@ -114,15 +261,24 @@ class Calendar extends Application {
             } else {
                 dailyUsage = -1;
             }
+            if (localData.generateWeather) {
+                this.generateWeatherDaily();
+            }
         }
         localData.partyResources.forEach((res) => {
             res.value -= res.usePerHour * calModifier;
             res.value -= res.usePerDay * dailyUsage;
-            if (res.value <= 0) {
+            if (res.value <= 0 && (res.usePerHour > 0 || (res.usePerDay > 0 && dailyUsage > 0))) {
                 ui.notifications.error("WARNING! Out of resource: " + res.name + "!");
                 res.value = 0;
             }
         });
+
+        if (localData.generateWeather) {
+            this.generateTempAndWind(true);
+            await updateDataInSettings("currentWeather", localData.currentWeather);
+        }
+
         await updateDataInSettings("calendarDate", localData.calendarDate.toISOString());
         await updateDataInSettings("partyResources", localData.partyResources);
     }

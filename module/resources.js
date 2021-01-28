@@ -157,6 +157,7 @@ class Resources extends Application {
                     localData.partyResources.splice(id, 1);
                     await this.render(true, {resources: localData.partyResources});
                     await updateDataInSettings("partyResources", localData.partyResources);
+                    this.loadSettings();
                 }
             },
         }).render(true);
@@ -211,6 +212,7 @@ class Resources extends Application {
         });
         await this.render(true, {resources: localData.partyResources});
         await updateDataInSettings("partyResources", localData.partyResources);
+        this.loadSettings();
     }
 
     async updateResources(type, html) {
