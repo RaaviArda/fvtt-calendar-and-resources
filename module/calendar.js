@@ -266,8 +266,8 @@ class Calendar extends Application {
             }
         }
         localData.partyResources.forEach((res) => {
-            res.value -= res.usePerHour * calModifier;
-            res.value -= res.usePerDay * dailyUsage;
+            res.value += res.usePerHour * calModifier;
+            res.value += res.usePerDay * dailyUsage;
             if (res.value <= 0 && (res.usePerHour > 0 || (res.usePerDay > 0 && dailyUsage > 0))) {
                 ui.notifications.error("WARNING! Out of resource: " + res.name + "!");
                 res.value = 0;

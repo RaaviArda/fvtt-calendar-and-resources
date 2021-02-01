@@ -129,8 +129,12 @@ async function loadData() {
     localData.partyResources =              await getDataFromSettings("partyResources");
     localData.calendarDate =       new Date(await getDataFromSettings("calendarDate"));
     localData.calendarYearAdjust = parseInt(await getDataFromSettings("calendarYearAdjust"));
-    localData.generateWeather =              await getDataFromSettings("generateWeather");
-    localData.currentWeather =               await getDataFromSettings("currentWeather");
+    localData.generateWeather =             await getDataFromSettings("generateWeather");
+    localData.currentWeather =              await getDataFromSettings("currentWeather");
+}
+
+function getResource(resName) {
+    return localData.partyResources.find((r) => r.name === resName);
 }
 
 function getRandomInt(min, max) {

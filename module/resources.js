@@ -92,8 +92,8 @@ class Resources extends Application {
         localData.partyResources.forEach((res, i) => {
             let resDisp = document.getElementById("resources-" + i);
             resDisp.innerHTML = parseInt(res.value).toLocaleString('ru-RU') + " / " +
-                                parseInt(res.max).toLocaleString('ru-RU') + " (-" +
-                                parseInt(res.usePerHour).toLocaleString('ru-RU') + "/H, -" +
+                                parseInt(res.max).toLocaleString('ru-RU') + " (" +
+                                parseInt(res.usePerHour).toLocaleString('ru-RU') + "/H, " +
                                 parseInt(res.usePerDay).toLocaleString('ru-RU')+ "/D) " +
                                 res.unit;
             resDisp.style.color="#" + res.color;

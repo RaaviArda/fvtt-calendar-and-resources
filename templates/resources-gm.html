@@ -9,7 +9,7 @@
                 <tr>
                     <td id="resources-name-{{@index}}" style="color: #{{color}}">{{name}}</td>
                     <td id="resources-{{@index}}" class="resDisp" data-resname="{{name}}" data-resid="{{@index}}" style="color: #{{color}}">
-                        {{value}} / {{max}} (-{{usePerHour}}/H, -{{usePerDay}}/D) {{unit}}</td>
+                        {{value}} / {{max}} ({{usePerHour}}/H, {{usePerDay}}/D) {{unit}}</td>
                     <td><a class="resources-delete" id="resources-delete-{{@index}}" title="Delete Resource" data-resid="{{@index}}"><i class="fas fa-trash" data-resid="{{@index}}"></i></a></td>
                 </tr>
                 {{/each}}
