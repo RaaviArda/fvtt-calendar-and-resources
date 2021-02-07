@@ -127,15 +127,18 @@ class Calendar extends Application {
         };
     }
 
-    generateWeatherDaily() {
+    generateWeatherDaily(newDay) {
         let month = localData.calendarDate.getUTCMonth();
         let fog = getRandomInt(1, 100) < this.FOG_PROB[month];
         let weather = weightedRand(this.WEATHER_DIST[month]);
+        if (newDay) {
+            localData.currentWeather.conditions = localData.currentWeather.nextDayConditions;
+        }
 
         if (fog) {
-            localData.currentWeather.conditions = this.WEATHER_TYPES[weather] + ", 🌫 foggy";
+            localData.currentWeather.nextDayConditions = this.WEATHER_TYPES[weather] + ", 🌫 foggy";
         } else {
-            localData.currentWeather.conditions = this.WEATHER_TYPES[weather];
+            localData.currentWeather.nextDayConditions = this.WEATHER_TYPES[weather];
         }
     }
 
@@ -254,6 +257,9 @@ class Calendar extends Application {
         localData.calendarDate.setUTCHours(localData.calendarDate.getUTCHours() + parseInt(calModifier));
         let newDay = parseInt(localData.calendarDate.getUTCDay().toString());
         let dailyUsage = 0;
+        if (localData.currentWeather.nextDayConditions === undefined || localData.currentWeather.nextDayConditions === null) {
+            this.generateWeatherDaily(false);
+        }
         if (currentDay !== newDay) {
             if (calModifier > 0) {
                 ui.notifications.info("It's a brand new day!");
@@ -262,7 +268,7 @@ class Calendar extends Application {
                 dailyUsage = -1;
             }
             if (localData.generateWeather) {
-                this.generateWeatherDaily();
+                this.generateWeatherDaily(true);
             }
         }
         localData.partyResources.forEach((res) => {
