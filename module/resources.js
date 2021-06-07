@@ -14,6 +14,10 @@ class Resources extends Application {
         return options;
     }
 
+    getData(options) {
+        return options;
+    }
+
     setPos(pos) {
         return new Promise(resolve => {
             function check() {
@@ -65,10 +69,6 @@ class Resources extends Application {
 
             check();
         })
-    }
-
-    getData(options) {
-        return options;
     }
 
     async toggleResources() {

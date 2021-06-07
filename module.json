@@ -2,9 +2,9 @@
   "name": "calendar-and-resources",
   "title": "Calendar and resources monitor",
   "description": "Calendar and resources monitor",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "minimumCoreVersion": "0.6.4",
-  "compatibleCoreVersion": "0.7.9",
+  "compatibleCoreVersion": "0.8.9",
   "author": "Raavi#3926",
     
   "scripts": ["module/core.js",
