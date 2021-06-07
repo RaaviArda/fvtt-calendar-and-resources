@@ -90,13 +90,13 @@ class Resources extends Application {
 
     updateDisplay() {
         localData.partyResources.forEach((res, i) => {
-            let resDisp = document.getElementById("resources-" + i);
-            resDisp.innerHTML = parseInt(res.value).toLocaleString('ru-RU') + " / " +
+            let resWindow = document.getElementById("resources-" + i);
+            resWindow.innerHTML = parseInt(res.value).toLocaleString('ru-RU') + " / " +
                                 parseInt(res.max).toLocaleString('ru-RU') + " (" +
                                 parseInt(res.usePerHour).toLocaleString('ru-RU') + "/H, " +
                                 parseInt(res.usePerDay).toLocaleString('ru-RU')+ "/D) " +
                                 res.unit;
-            resDisp.style.color="#" + res.color;
+            resWindow.style.color="#" + res.color;
             let nameDisp = document.getElementById("resources-name-" + i);
             nameDisp.innerHTML = res.name;
             nameDisp.style.color="#" + res.color;
