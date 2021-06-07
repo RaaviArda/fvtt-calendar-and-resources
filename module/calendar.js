@@ -35,7 +35,7 @@ class Calendar extends Application {
     }
 
     getData(options) {
-        return options;
+        return options.renderData;
     }
 
     setPos(pos) {
@@ -105,6 +105,7 @@ class Calendar extends Application {
             let timeData = this.generateTimeData();
             let weatherData = this.generateTempAndWind(false);
             this.content = await renderTemplate(templatePath, {date: timeData, weather: weatherData});
+            this.options.renderData = {date: timeData, weather: weatherData};
             await this.render(true, {date: timeData, weather: weatherData});
         }
     }

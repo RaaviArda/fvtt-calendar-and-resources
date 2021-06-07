@@ -85,10 +85,6 @@ Hooks.once("ready", async () => {
     await calDisp.toggleCalendar();
 });
 
-Hooks.on('renderResources', () => {
-    resDisp.updateDisplay();
-});
-
 Hooks.on('renderCalendar', () => {
     calDisp.updateDisplay();
 });

@@ -15,7 +15,7 @@ class Resources extends Application {
     }
 
     getData(options) {
-        return options;
+        return options.renderData;
     }
 
     setPos(pos) {
@@ -155,6 +155,7 @@ class Resources extends Application {
             close: async () => {
                 if (deleteResource) {
                     localData.partyResources.splice(id, 1);
+                    this.options.renderData = { resources: localData.partyResources};
                     await this.render(true, {resources: localData.partyResources});
                     await updateDataInSettings("partyResources", localData.partyResources);
                     this.loadSettings();
@@ -210,6 +211,7 @@ class Resources extends Application {
             unit: newUnit,
             color: newColor
         });
+        this.options.renderData = { resources: localData.partyResources};
         await this.render(true, {resources: localData.partyResources});
         await updateDataInSettings("partyResources", localData.partyResources);
         this.loadSettings();
@@ -231,6 +233,7 @@ class Resources extends Application {
         localData.partyResources[type].usePerHour = newPerHour;
         localData.partyResources[type].unit = newUnit;
         localData.partyResources[type].color = newColor;
+        this.options.renderData = { resources: localData.partyResources};
         await updateDataInSettings("partyResources", localData.partyResources);
     }
 

@@ -2,7 +2,7 @@
   "name": "calendar-and-resources",
   "title": "Calendar and resources monitor",
   "description": "Calendar and resources monitor",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "minimumCoreVersion": "0.6.4",
   "compatibleCoreVersion": "0.8.9",
   "author": "Raavi#3926",
