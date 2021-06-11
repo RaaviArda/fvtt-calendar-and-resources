@@ -246,7 +246,11 @@ class Calendar extends Application {
             windElement.innerHTML = windDisplay;
             tempElement.style.color = tempDisplay.color;
             tempElement.innerHTML = tempDisplay.desc;
-            weatherElement.innerHTML = localData.currentWeather.conditions;
+            if (game.user.isGM) {
+                weatherElement.innerHTML = localData.currentWeather.conditions + " -> " + localData.currentWeather.nextDayConditions;
+            } else {
+                weatherElement.innerHTML = localData.currentWeather.conditions;
+            }
         }
     }
 
@@ -293,6 +297,7 @@ class Calendar extends Application {
     async activateListeners(html) {
         const displays = '.calendar-button';
         const calendarMove = '#calendar-move';
+        const calendarWeather = '#calendar-weather';
 
         if (game.user.isGM) {
             html.find(displays).click(async ev => {
@@ -302,6 +307,13 @@ class Calendar extends Application {
                     if (calModifier !== undefined && calModifier !== null) {
                         await this.updateCalendar(calModifier);
                     }
+                }
+            });
+            html.find(calendarWeather).click(async ev => {
+                ev.preventDefault();
+                if (game.user.isGM) {
+                    this.generateWeatherDaily(false);
+                    await this.updateDisplay();
                 }
             });
         }
