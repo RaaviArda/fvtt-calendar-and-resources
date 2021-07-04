@@ -89,6 +89,10 @@ Hooks.on('renderCalendar', () => {
     calDisp.updateDisplay();
 });
 
+Hooks.on('renderResources', () => {
+    resDisp.updateDisplay();
+});
+
 const localData = {};
 
 var resDisp;

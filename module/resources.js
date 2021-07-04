@@ -91,10 +91,10 @@ class Resources extends Application {
     updateDisplay() {
         localData.partyResources.forEach((res, i) => {
             let resWindow = document.getElementById("resources-" + i);
-            resWindow.innerHTML = parseInt(res.value).toLocaleString('ru-RU') + " / " +
-                                parseInt(res.max).toLocaleString('ru-RU') + " (" +
-                                parseInt(res.usePerHour).toLocaleString('ru-RU') + "/H, " +
-                                parseInt(res.usePerDay).toLocaleString('ru-RU')+ "/D) " +
+            resWindow.innerHTML = parseFloat(res.value).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " / " +
+                                parseFloat(res.max).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " (" +
+                                parseFloat(res.usePerHour).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "/H, " +
+                                parseFloat(res.usePerDay).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "/D) " +
                                 res.unit;
             resWindow.style.color="#" + res.color;
             let nameDisp = document.getElementById("resources-name-" + i);
@@ -195,10 +195,10 @@ class Resources extends Application {
 
     async addResource(html) {
         let newName = html.find('[id=resource-name]')[0].value;
-        let newValue = parseInt(html.find('[id=resource-value]')[0].value);
-        let newMax = parseInt(html.find('[id=resource-max]')[0].value);
-        let newPerHour = parseInt(html.find('[id=resource-perhour]')[0].value);
-        let newPerDay = parseInt(html.find('[id=resource-perday]')[0].value);
+        let newValue = parseFloat(html.find('[id=resource-value]')[0].value).toFixed(2);
+        let newMax = parseFloat(html.find('[id=resource-max]')[0].value).toFixed(2);
+        let newPerHour = parseFloat(html.find('[id=resource-perhour]')[0].value).toFixed(2);
+        let newPerDay = parseFloat(html.find('[id=resource-perday]')[0].value).toFixed(2);
         let newUnit = html.find('[id=resource-unit]')[0].value;
         let newColor = html.find('[id=resource-color]')[0].value;
 
@@ -219,10 +219,10 @@ class Resources extends Application {
 
     async updateResources(type, html) {
         let newName = html.find('[id=resource-name]')[0].value;
-        let newValue = parseInt(html.find('[id=resource-value]')[0].value);
-        let newMax = parseInt(html.find('[id=resource-max]')[0].value);
-        let newPerHour = parseInt(html.find('[id=resource-perhour]')[0].value);
-        let newPerDay = parseInt(html.find('[id=resource-perday]')[0].value);
+        let newValue = parseFloat(html.find('[id=resource-value]')[0].value).toFixed(2);
+        let newMax = parseFloat(html.find('[id=resource-max]')[0].value).toFixed(2);
+        let newPerHour = parseFloat(html.find('[id=resource-perhour]')[0].value).toFixed(2);
+        let newPerDay = parseFloat(html.find('[id=resource-perday]')[0].value).toFixed(2);
         let newUnit = html.find('[id=resource-unit]')[0].value;
         let newColor = html.find('[id=resource-color]')[0].value;
 
