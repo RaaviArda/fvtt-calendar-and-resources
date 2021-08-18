@@ -268,18 +268,18 @@ class Calendar extends Application {
         if (currentDay !== newDay) {
             if (calModifier > 0) {
                 ui.notifications.info("It's a brand new day!");
-                dailyUsage = 1;
+                dailyUsage = 1.0;
             } else {
-                dailyUsage = -1;
+                dailyUsage = -1.0;
             }
             if (localData.generateWeather) {
                 this.generateWeatherDaily(true);
             }
         }
         localData.partyResources.forEach((res) => {
-            res.value += res.usePerHour * calModifier;
-            res.value += res.usePerDay * dailyUsage;
-            if (res.value <= 0 && (res.usePerHour > 0 || (res.usePerDay > 0 && dailyUsage > 0))) {
+            res.value = parseFloat(res.value) + parseFloat(res.usePerHour) * calModifier;
+            res.value = parseFloat(res.value) + parseFloat(res.usePerDay) * dailyUsage;
+            if (res.value <= 0 && (parseFloat(res.usePerHour) > 0 || (parseFloat(res.usePerDay) > 0 && dailyUsage > 0))) {
                 ui.notifications.error("WARNING! Out of resource: " + res.name + "!");
                 res.value = 0;
             }
